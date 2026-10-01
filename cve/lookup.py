@@ -302,14 +302,16 @@ class CVELookup:
                 port.checked = True
             elif os_cpe_with_version:
                 port.note = "no application CPE, see the OS line of this host"
-            elif port.product and port.version:
+            elif port.product:
                 findings = self.lookup_by_keyword(port.product, port.version)
                 if findings:
                     port.cves = findings
                     port.cve_match = "keyword"
                     port.checked = True
-                else:
+                elif port.version:
                     port.note = "no exact CPE, keyword search inconclusive"
+                else:
+                    port.note = "no exact CPE, keyword search (product only) inconclusive"
             else:
                 port.note = "no CPE or version detected"
         except CPEUnknown:

@@ -44,6 +44,7 @@ class PortResult:
     cpes: List[str] = field(default_factory=list)
     identified: bool = False      # nmap confidently identified the service
     status: str = "detecting"     # detecting -> checking -> done
+    started_at: float = 0.0       # time.monotonic() when detection started
     checked: bool = False         # True only if a CVE lookup really completed
     cve_match: str = ""           # "cpe" (exact) or "keyword" (approximate)
     cves: List[CVEFinding] = field(default_factory=list)

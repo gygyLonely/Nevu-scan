@@ -158,6 +158,8 @@ def _process_port(host: HostResult, port: PortResult, ctx: ScanContext,
             port.note = "skipped: host time limit reached"
             return
 
+        port.started_at = time.monotonic()
+
         args = ["-n", "-Pn", "-sV", "-p", str(port.port)]
         if ctx.scripts:
             args.append("-sC")

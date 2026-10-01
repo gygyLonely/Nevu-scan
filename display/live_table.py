@@ -3,6 +3,7 @@ NEVUS - Live terminal display, updated as results come in.
 """
 
 import threading
+import time
 from typing import Dict, List
 
 from rich.console import Console
@@ -42,8 +43,9 @@ def _port_line(port: PortResult) -> str:
     if port.error:
         return f"{prefix}  [bold magenta]error: {port.error}[/bold magenta]"
     if port.status != "done":
-        step = "detecting version..." if port.status == "detecting" else "checking CVEs..."
-        return f"{prefix}  [dim]{step}[/dim]"
+        step = "detecting version" if port.status == "detecting" else "checking CVEs"
+        elapsed = f" ({int(time.monotonic() - port.started_at)}s)" if port.started_at else ""
+        return f"{prefix}  [dim]{step}...{elapsed}[/dim]"
 
     sev = port.highest_severity
     style = _SEVERITY_STYLE.get(sev, "white")
